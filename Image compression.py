@@ -95,6 +95,7 @@ def assign_centroid(X,centroids):
     return c
         
 def position_ofCentroid(X,c):
+    #stroinf the indexes where c[i]=1,2,3,....in x_centroid1,x_centroid2,....
     for i in range(len(c)):
         if  (c[i]==1):
             x_centroid1[i] = i
@@ -131,6 +132,7 @@ def position_ofCentroid(X,c):
    
     new_centroidPosition = np.zeros((16,3))
     
+    #removing all the zeros from x_centroid'n'
     cluster1_points=(x_centroid1[x_centroid1!=0])
     cluster2_points=(x_centroid2[x_centroid2!=0])
     cluster3_points=(x_centroid3[x_centroid3!=0])
@@ -149,7 +151,7 @@ def position_ofCentroid(X,c):
     cluster16_points=(x_centroid16[x_centroid16!=0])
     
     
-    #calc the average
+    #define 16 empry arrays(full of zeros) for positions of 16 clusters
     new_pos1=np.array([0.0,0.0,0.0])
     new_pos2=np.array([0.0,0.0,0.0])
     new_pos3=np.array([0.0,0.0,0.0])
@@ -167,6 +169,8 @@ def position_ofCentroid(X,c):
     new_pos15=np.array([0.0,0.0,0.0])
     new_pos16=np.array([0.0,0.0,0.0])
     
+    
+    #calculate the average of assigned points for each cluster
     for i in range(len(cluster1_points)):
         new_pos1+=X[int(cluster1_points[i])]
         
@@ -228,7 +232,7 @@ def position_ofCentroid(X,c):
     new_pos16 = new_pos16/len(cluster16_points)
 
 
-    
+    #storing the position of new cluster centers in new_centroidPosition array    
     new_centroidPosition[0] = new_pos1
     new_centroidPosition[1] = new_pos2
     new_centroidPosition[2] = new_pos3
@@ -247,7 +251,7 @@ def position_ofCentroid(X,c):
     new_centroidPosition[15] = new_pos16
     
     
-#    print(new_centroidPosition)
+
     return new_centroidPosition    
 
 def init_Centroid(X):
@@ -258,11 +262,12 @@ def plot(X,c,centroids):
     
     fig = plt.figure()
     ax  = Axes3D(fig)
-    
+    #plotting the assigned points 
     ax.scatter(X[:,0],X[:,1],X[:,2],c=c[:].ravel(),cmap='viridis',alpha=0.1)
-   
+    # plotting the final centroids
     ax.scatter(centroids[:,0],centroids[:,1],centroids[:,2],s=300,c='red',alpha=1,marker='*')
 def compress(centroids,X,c):
+       #setting positon of each pixel to its corresponding cluster point 
     for i in range(len(X)):
         if(c[i]==1):
             X[i] = centroids[0]
@@ -309,10 +314,11 @@ def main():
         print(i)        
         centroids=position_ofCentroid(image_matrix,c)
             
+#Uncomment the next line if you want to plot the 3D scatter plot
         
-#    plot(image_matrix,c,centroids)
-    image_matrix = compress(centroids,image_matrix,c)
+ #   plot(image_matrix,c,centroids)
+   image_matrix = compress(centroids,image_matrix,c)
     
-    imshow(image_matrix.reshape((128,128,3)))
+   imshow(image_matrix.reshape((128,128,3)))
 if __name__== '__main__':
     main()  
