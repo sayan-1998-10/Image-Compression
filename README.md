@@ -1,4 +1,4 @@
-# Image-Compression is awesome...
+# Image-Compression 
 Image compression using K-mean clustering algorithm
 
 I have used K-mean Clustering to compress the given image(bird_small.png).
